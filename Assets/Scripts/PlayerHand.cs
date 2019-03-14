@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class PlayerHand : Hand {
 
-	protected override void DetermineFinalPosition()
-    {
-        // this is called :)
-        Debug.Log("derived class call");
+    public float distanceFromPlayer;
+    public float pivotOffset;
 
-        Vector3 finalPos;
+	protected override void DetermineFinalTransform(Transform cardHolder, out Vector3 finalPos, out Quaternion finalRot)
+    {
+        Debug.Log("derived class call");
 
         float angleLowBound = 180 - 5 * (contents.Count - 1) / 2;
         float angleHighBound = 180 + 5 * (contents.Count - 1) / 2;
         float angleStep = (angleHighBound - angleLowBound) / contents.Count;
 
         float theta = angleLowBound;
-        for (int i = 0; i < contents.Count; i++)
+        for (int i = 0; i < contents.Count - 1; i++)
         {
             Vector3 rotation = contents[i].transform.localEulerAngles;
             rotation.z = (theta + 180) % 360;
@@ -24,5 +24,12 @@ public class PlayerHand : Hand {
 
             theta += angleStep;
         }
+
+        finalRot = Quaternion.Euler(
+            cardHolder.rotation.eulerAngles.x,
+            180,
+            (theta + 180) % 360);
+
+        finalPos = cardHolder.position + cardHolder.forward * pivotOffset;
     }
 }

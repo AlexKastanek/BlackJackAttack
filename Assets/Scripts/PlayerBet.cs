@@ -35,7 +35,7 @@ public class PlayerBet : MonoBehaviour {
         }
 
         // check if wager exceeds bounds
-        if (wager < 0f || wager > player.balance)
+        if (wager <= 0f || wager > player.balance)
         {
             DisplayInvalidWager();
             return;

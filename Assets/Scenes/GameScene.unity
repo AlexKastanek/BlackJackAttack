@@ -599,7 +599,8 @@ Transform:
   m_LocalRotation: {x: 0.340051, y: -0, z: -0, w: 0.94040704}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1397996688}
   m_Father: {fileID: 1686285884}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 39.760002, y: 0, z: 0}
@@ -1253,13 +1254,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1397996687}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.18, y: -0.65, z: 0.92}
+  m_LocalRotation: {x: -0.60876137, y: 0, z: 0, w: 0.7933534}
+  m_LocalPosition: {x: -0.506, y: -0.57, z: 1.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1686285884}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 534669905}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -75, y: 0, z: 0}
 --- !u!114 &1397996689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1273,6 +1274,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contents: []
   drawPile: {fileID: 488724374}
+  distanceFromPlayer: 0
+  pivotOffset: 2
 --- !u!1 &1600938348
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,7 +1400,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 534669905}
-  - {fileID: 1397996688}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

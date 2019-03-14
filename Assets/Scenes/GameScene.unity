@@ -1075,6 +1075,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1686285884}
+  - component: {fileID: 1686285886}
+  - component: {fileID: 1686285885}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1096,6 +1098,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1686285885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686285883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b617227bd9f0fdb47aeeb9c268f631b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: {fileID: 1914104475}
+  inputFieldText: {fileID: 1014194691}
+  submitButton: {fileID: 247381644}
+--- !u!114 &1686285886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686285883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3854c9a9238b1fa4393a42c5682d88a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  balance: 20
+  wager: 0
 --- !u!1 &1914104473
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,7 +1157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -996, y: 181}
+  m_AnchoredPosition: {x: -996, y: 197}
   m_SizeDelta: {x: 1264.72, y: 126.79999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1914104475

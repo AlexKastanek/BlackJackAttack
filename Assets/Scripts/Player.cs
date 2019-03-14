@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
+    public PlayerHand hand;
+
     public float balance = 20f;
     public float wager = 0f;
 
@@ -16,6 +18,8 @@ public class Player : MonoBehaviour {
 
     private void Start()
     {
+        GameManager.Instance.stateChangedEvent.AddListener(OnStateChanged);
+
         lastBalance = balance;
         lastWager = wager;
 
@@ -34,6 +38,14 @@ public class Player : MonoBehaviour {
     {
         balanceText.text = "Balance: " + balance.ToString("c2");
         wagerText.text = "Wager: " + wager.ToString("c2");
+    }
+
+    public void OnStateChanged(GameState gameState)
+    {
+        if (gameState == GameState.DealingPhase)
+        {
+            hand.DrawCard();
+        }
     }
 
 }

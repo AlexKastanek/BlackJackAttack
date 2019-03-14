@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Card.cs" />
     <Compile Include="Assets\Scripts\Deck.cs" />
+    <Compile Include="Assets\Scripts\DrawPile.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/akast/Documents/UnityProjects/BlackJackAttack/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum GameState
 {
@@ -14,25 +15,50 @@ public enum GameState
     GameOver            // end of the game
 }
 
+public class StateChangedEvent : UnityEvent<GameState>
+{
+
+}
+
 public class GameManager : Singleton<GameManager> {
+
+    public StateChangedEvent stateChangedEvent;
 
     public GameState gameState;
 
+    private GameState lastGameState;
+
     private void Awake()
     {
+        stateChangedEvent = new StateChangedEvent();
+
         gameState = GameState.GameStart;
+        lastGameState = GameState.GameOver;
     }
 
     private void Update()
     {
+        // check if current state is different than last state
+        if (gameState != lastGameState)
+        {
+            Debug.Log("state changed (game manager)");
+
+            // invoke the state changed event
+            stateChangedEvent.Invoke(gameState);
+            Debug.Log("Game manager invoked state changed event");
+
+            lastGameState = gameState;
+            Debug.Log("Game manager reset lastGameState");
+        }
+
         switch (gameState)
         {
             case GameState.GameStart:
-                // wait until all game items are ready
+                // immediately transition to next state
+                gameState = GameState.PlayerBets;
                 break;
 
             case GameState.PlayerBets:
-                // change canvas to player bet canvas
                 // wait for player entry
                 break;
 
@@ -70,7 +96,7 @@ public class GameManager : Singleton<GameManager> {
                 break;
 
             default:
-                throw new UnityException("Attempted to enter unknown state");
+                throw new UnityException("Attempted to enter unknown game state");
         }
     }
 }

@@ -11,16 +11,7 @@ public class DrawPile : MonoBehaviour {
 
     private void Awake()
     {
-        drawPile = new List<GameObject>();
-
-        // create the drawPile from the decks of cards
-        for (int i = 0; i < deckCount; i++)
-        {
-            for (int j = 0; j < deck.contents.Count; j++)
-            {
-                drawPile.Add(deck.contents[j]);
-            }
-        }
+        Reset();
     }
 
     private void Start()
@@ -46,5 +37,19 @@ public class DrawPile : MonoBehaviour {
 
         // return the card
         return card;
+    }
+
+    public void Reset()
+    {
+        drawPile = new List<GameObject>();
+
+        // create the drawPile from the decks of cards
+        for (int i = 0; i < deckCount; i++)
+        {
+            for (int j = 0; j < deck.contents.Count; j++)
+            {
+                drawPile.Add(deck.contents[j]);
+            }
+        }
     }
 }

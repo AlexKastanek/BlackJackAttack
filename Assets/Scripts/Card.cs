@@ -26,8 +26,8 @@ public class Card : MonoBehaviour
 
         while (elapsedTime < time)
         {
-            Debug.Log("position of " + gameObject.name + ": " + transform.position);
-            Debug.Log("rotation of " + gameObject.name + ": " + transform.rotation);
+            //Debug.Log("position of " + gameObject.name + ": " + transform.position);
+            //Debug.Log("rotation of " + gameObject.name + ": " + transform.rotation);
             transform.position = Vector3.Lerp(startPos, endPos, elapsedTime / time);
             transform.rotation = Quaternion.Lerp(startRot, endRot, elapsedTime / time);
             elapsedTime += Time.deltaTime;
@@ -41,6 +41,51 @@ public class Card : MonoBehaviour
         transform.rotation = endRot;
 
         transform.parent.parent.GetComponent<Hand>().isDrawing = false;
+    }
+
+    public IEnumerator FlipOver()
+    {
+        float moveTime = 0.5f, flipTime = 0.25f;
+
+        Vector3 startPos = transform.position;
+        Quaternion startRot = transform.rotation;
+
+        Vector3 endPos = startPos + Vector3.up * 0.25f;
+        Quaternion endRot = startRot;
+        endRot.eulerAngles += new Vector3(180f, 0f, 0f);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < moveTime)
+        {
+            transform.position = Vector3.Lerp(startPos, endPos, elapsedTime / moveTime);
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        transform.position = endPos;
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < flipTime)
+        {
+            transform.rotation = Quaternion.Lerp(startRot, endRot, elapsedTime / flipTime);
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        transform.rotation = endRot;
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < moveTime)
+        {
+            transform.position = Vector3.Lerp(endPos, startPos, elapsedTime / moveTime);
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        transform.position = startPos;
     }
 
 }

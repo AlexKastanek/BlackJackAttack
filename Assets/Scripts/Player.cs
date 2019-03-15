@@ -19,6 +19,8 @@ public class Player : MonoBehaviour {
     private float lastWager;
     private float lastScore;
 
+    private bool attackPhase = false;
+
     private void Start()
     {
         GameManager.Instance.stateChangedEvent.AddListener(OnStateChanged);
@@ -42,6 +44,23 @@ public class Player : MonoBehaviour {
         lastBalance = balance;
         lastWager = wager;
         lastScore = score;
+
+        if (attackPhase)
+        {
+            if (!hand.isDrawing)
+            {
+                StartCoroutine(DrawCards(1));
+                hand.CalculateHandScore();
+            }
+
+            if (score >= 50)
+            {
+                // declare victory
+                attackPhase = false;
+                GameManager.Instance.victor = "Player";
+                GameManager.Instance.gameState = GameState.RoundOver;
+            }
+        }
     }
 
     public void UpdateDisplay()
@@ -72,6 +91,10 @@ public class Player : MonoBehaviour {
         if (gameState == GameState.DealingPhase)
         {
             StartCoroutine(DrawCards(2));
+        }
+        else if (gameState == GameState.AttackPhase)
+        {
+            attackPhase = true;
         }
     }
 

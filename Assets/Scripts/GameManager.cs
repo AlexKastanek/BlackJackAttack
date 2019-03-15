@@ -8,6 +8,7 @@ public enum GameState
     GameStart,          // start of the game
     PlayerBets,         // player wagers bets
     DealingPhase,       // dealer deals to player
+    AttackPhase,        // the twist! dealer and player race to 50
     PlayerTurn,         // player takes turn
     DealerCardReveal,   // hole card reveal, dealer draws cards
     PlayerCardReveal,   // player card reveal, victory determination
@@ -25,6 +26,8 @@ public class GameManager : Singleton<GameManager> {
     public StateChangedEvent stateChangedEvent;
 
     public GameState gameState;
+
+    public string victor;
 
     private GameState lastGameState;
 
@@ -55,6 +58,7 @@ public class GameManager : Singleton<GameManager> {
         {
             case GameState.GameStart:
                 // immediately transition to next state
+                StopAllCoroutines();
                 gameState = GameState.PlayerBets;
                 break;
 
@@ -66,9 +70,13 @@ public class GameManager : Singleton<GameManager> {
                 // change canvas to in-game canvas
                 // wait for dealer to finish dealing
                 // if non-hole card is an ace or 10-card
-                // wait for dealer to peak at hole card
-                // if hole card leads to blackjack
-                // go to card reveal phase
+                // wait for dealer to flip hole card.
+                // Once the dealer flips hole card
+                // initiate attack phase
+                break;
+
+            case GameState.AttackPhase:
+                // dealer and player race to 50
                 break;
 
             case GameState.PlayerTurn:
@@ -88,7 +96,6 @@ public class GameManager : Singleton<GameManager> {
 
             case GameState.RoundOver:
                 // prompt player to play again
-                // if yes, prompt which card value changes
                 break;
 
             case GameState.GameOver:

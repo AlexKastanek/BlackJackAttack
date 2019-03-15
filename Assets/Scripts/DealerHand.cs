@@ -5,6 +5,7 @@ using UnityEngine;
 public class DealerHand : Hand {
 
     public bool holeCardRevealed = false;
+    public bool firstDraw = true;
 
     public override void CalculateHandScore()
     {
@@ -62,7 +63,21 @@ public class DealerHand : Hand {
                     bust = true;
                 }
             }
+
+            if (firstDraw && score >= 10)
+            {
+                Debug.Log("revealing hole card...");
+                firstDraw = false;
+                StartCoroutine(contents[0].GetComponent<Card>().FlipOver());
+                holeCardRevealed = true;
+
+                CalculateHandScore();
+
+                GameManager.Instance.gameState = GameState.AttackPhase;
+            }
         }
+
+        firstDraw = false;
     }
 
     protected override void DetermineFinalTransform(ref Transform finalTransform)

@@ -42,6 +42,7 @@ public class PlayerBet : MonoBehaviour {
         }
 
         // if wager is valid, set the wager and go to next state
+        player.balance -= wager;
         player.wager = wager;
         GameManager.Instance.gameState = GameState.DealingPhase;
     }

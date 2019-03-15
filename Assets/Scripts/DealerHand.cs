@@ -80,6 +80,14 @@ public class DealerHand : Hand {
         firstDraw = false;
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+
+        firstDraw = true;
+        holeCardRevealed = false;
+    }
+
     protected override void DetermineFinalTransform(ref Transform finalTransform)
     {
         Vector3 finalPosition;

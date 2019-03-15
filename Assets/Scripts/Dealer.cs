@@ -46,7 +46,7 @@ public class Dealer : MonoBehaviour {
             if (score >= 50)
             {
                 // declare victory
-                attackPhase = false;
+                GameManager.Instance.StopAllCoroutines();
                 GameManager.Instance.victor = "Dealer";
                 GameManager.Instance.gameState = GameState.RoundOver;
             }
@@ -56,6 +56,11 @@ public class Dealer : MonoBehaviour {
     public void UpdateDisplay()
     {
         scoreText.text = "Dealer's hand: " + score;
+    }
+
+    public void RoundReset()
+    {
+        hand.Reset();
     }
 
     public IEnumerator DrawCards(int numCards)
@@ -83,6 +88,10 @@ public class Dealer : MonoBehaviour {
         else if (gameState == GameState.AttackPhase)
         {
             attackPhase = true;
+        }
+        else if (gameState == GameState.RoundOver)
+        {
+            RoundReset();
         }
     }
 }

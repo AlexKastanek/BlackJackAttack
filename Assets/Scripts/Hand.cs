@@ -109,6 +109,24 @@ public class Hand : MonoBehaviour {
         }
     }
 
+    public virtual void Reset()
+    {
+        blackjack = false;
+        bust = false;
+        score = 0;
+        
+        foreach (GameObject cardObject in contents)
+        {
+            Destroy(cardObject);
+        }
+
+        contents.Clear();
+
+        isDrawing = false;
+
+        drawPile.Reset();
+    }
+
     protected virtual void DetermineFinalTransform(ref Transform finalTransform)
     {
         Debug.Log("base class call (hand)");

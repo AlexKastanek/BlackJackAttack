@@ -8,6 +8,7 @@ public class CanvasManager : MonoBehaviour {
     public Canvas betCanvas;
     public Canvas scoreCanvas;
     public Canvas attackCanvas;
+    public Canvas roundOverCanvas;
 
     private void Start()
     {
@@ -41,6 +42,11 @@ public class CanvasManager : MonoBehaviour {
                 scoreCanvas.enabled = true;
                 attackCanvas.enabled = true;
                 break;
+            case GameState.RoundOver:
+                defaultCanvas.enabled = true;
+                scoreCanvas.enabled = true;
+                roundOverCanvas.enabled = true;
+                break;
             default:
                 defaultCanvas.enabled = true;
                 break;
@@ -53,5 +59,6 @@ public class CanvasManager : MonoBehaviour {
         betCanvas.enabled = false;
         scoreCanvas.enabled = false;
         attackCanvas.enabled = false;
+        roundOverCanvas.enabled = false;
     }
 }

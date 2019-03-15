@@ -56,10 +56,36 @@ public class Player : MonoBehaviour {
             if (score >= 50)
             {
                 // declare victory
-                attackPhase = false;
+                GameManager.Instance.StopAllCoroutines();
                 GameManager.Instance.victor = "Player";
                 GameManager.Instance.gameState = GameState.RoundOver;
             }
+        }
+    }
+
+    private void CalculateWinnings()
+    {
+        if (GameManager.Instance.victor == "Player")
+        {
+            if (hand.blackjack && !attackPhase)
+            {
+                // payoff is 3:2
+                balance += wager * 2.5f;
+            }
+            else
+            {
+                // payoff is 1:1
+                balance += wager * 2f;
+            }
+        }
+
+        wager = 0f;
+
+        UpdateDisplay();
+
+        if (balance == 0f)
+        {
+            Debug.Log("Game Over");
         }
     }
 
@@ -68,6 +94,12 @@ public class Player : MonoBehaviour {
         balanceText.text = "Balance: " + balance.ToString("c2");
         wagerText.text = "Wager: " + wager.ToString("c2");
         scoreText.text = "Hand: " + score;
+    }
+
+    public void RoundReset()
+    {
+        attackPhase = false;
+        hand.Reset();
     }
 
     public IEnumerator DrawCards(int numCards)
@@ -95,6 +127,11 @@ public class Player : MonoBehaviour {
         else if (gameState == GameState.AttackPhase)
         {
             attackPhase = true;
+        }
+        else if (gameState == GameState.RoundOver)
+        {
+            CalculateWinnings();
+            RoundReset();
         }
     }
 

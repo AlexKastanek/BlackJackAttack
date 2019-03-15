@@ -106,4 +106,9 @@ public class GameManager : Singleton<GameManager> {
                 throw new UnityException("Attempted to enter unknown game state");
         }
     }
+
+    public void SetGameState(GameState gameState)
+    {
+        this.gameState = gameState;
+    }
 }

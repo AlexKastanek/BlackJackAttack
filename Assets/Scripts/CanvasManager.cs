@@ -43,6 +43,10 @@ public class CanvasManager : MonoBehaviour {
                 scoreCanvas.enabled = true;
                 playerTurnCanvas.enabled = true;
                 break;
+            case GameState.DealerCardReveal:
+                defaultCanvas.enabled = true;
+                scoreCanvas.enabled = true;
+                break;
             case GameState.AttackPhase:
                 defaultCanvas.enabled = true;
                 scoreCanvas.enabled = true;

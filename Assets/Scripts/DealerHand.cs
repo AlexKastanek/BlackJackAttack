@@ -66,10 +66,8 @@ public class DealerHand : Hand {
 
             if (firstDraw && score >= 10)
             {
-                Debug.Log("revealing hole card...");
                 firstDraw = false;
-                StartCoroutine(contents[0].GetComponent<Card>().FlipOver());
-                holeCardRevealed = true;
+                RevealHoleCard();
 
                 CalculateHandScore();
 
@@ -83,6 +81,13 @@ public class DealerHand : Hand {
         }
 
         firstDraw = false;
+    }
+
+    public void RevealHoleCard()
+    {
+        Debug.Log("revealing hole card...");
+        StartCoroutine(contents[0].GetComponent<Card>().FlipOver());
+        holeCardRevealed = true;
     }
 
     public override void ResetStats()

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerTurn : MonoBehaviour {
 
+    public Canvas canvas;
     public Button standButton, hitButton, doubleButton, surrenderButton;
     public Text doubleError, surrenderError;
 
@@ -29,15 +30,14 @@ public class PlayerTurn : MonoBehaviour {
 
     public void Hit()
     {
-        StartCoroutine(player.DrawCards(1));
+        StartCoroutine(HitHelper());
     }
 
     public void Double()
     {
         if (playerBet.DoubleWager())
         {
-            StartCoroutine(player.DrawCards(1));
-            GameManager.Instance.gameState = GameState.DealerCardReveal;
+            StartCoroutine(DoubleHelper());
         }
         else
         {
@@ -56,5 +56,49 @@ public class PlayerTurn : MonoBehaviour {
         {
             surrenderError.enabled = true;
         }
+    }
+
+    /**
+     * Disables the canvas while the card is being
+     * drawn
+     */
+    private IEnumerator HitHelper()
+    {
+        canvas.enabled = false;
+        StartCoroutine(DoubleHelper());
+        yield return new WaitUntil(() => !player.hand.isDrawing);
+        canvas.enabled = true;
+
+        player.hand.CalculateHandScore();
+
+        player.UpdateDisplay();
+
+        if (player.hand.bust)
+            player.DeclareLoss();
+    }
+
+    /**
+     * Draws a card for the player and waits until
+     * card has been drawn before checking for bust 
+     * and transitioning to next state
+     * 
+     * Also disables the canvas while the card is
+     * being drawn
+     */
+    private IEnumerator DoubleHelper()
+    {
+        canvas.enabled = false;
+        StartCoroutine(player.DrawCards(1));
+        yield return new WaitUntil(() => !player.hand.isDrawing);
+        canvas.enabled = true;
+
+        player.hand.CalculateHandScore();
+
+        player.UpdateDisplay();
+
+        if (player.hand.bust)
+            player.DeclareLoss();
+        else
+            GameManager.Instance.gameState = GameState.DealerCardReveal;
     }
 }

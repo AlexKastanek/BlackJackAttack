@@ -7,9 +7,13 @@ public class Dealer : MonoBehaviour {
 
     public DealerHand hand;
 
+    public Player player;
+
     public float score = 0f;
 
     public Text scoreText;
+
+    private IEnumerator drawCardsCoroutine;
 
     private float lastScore;
 
@@ -18,6 +22,8 @@ public class Dealer : MonoBehaviour {
     private void Start()
     {
         GameManager.Instance.stateChangedEvent.AddListener(OnStateChanged);
+
+        drawCardsCoroutine = DrawCards(1);
 
         lastScore = score;
 
@@ -45,7 +51,7 @@ public class Dealer : MonoBehaviour {
 
             if (score >= 50)
             {
-                DeclareVictory();
+                DetermineVictorByScore();
             }
         }
         else if (GameManager.Instance.gameState == GameState.DealerCardReveal)
@@ -54,6 +60,21 @@ public class Dealer : MonoBehaviour {
             {
                 DeclareLoss();
             }
+
+            if (!hand.holeCardRevealed)
+            {
+                hand.RevealHoleCard();
+            }
+            else if (!hand.isDrawing && score <= 16)
+            {
+                StartCoroutine(DrawCards(1)); 
+            }
+            else if (!hand.isDrawing && score > 16)
+            {
+                DetermineVictorByScore();
+            }
+
+            hand.CalculateHandScore();
         }
     }
 
@@ -62,22 +83,64 @@ public class Dealer : MonoBehaviour {
         scoreText.text = "Dealer's hand: " + score;
     }
 
+    public void DetermineVictorByScore()
+    {
+        if (score == 21 && player.score == 21)
+        {
+            if (hand.blackjack && !player.hand.blackjack)
+            {
+                DeclareVictory();
+            }
+            else if (!hand.blackjack && player.hand.blackjack)
+            {
+                DeclareLoss();
+            }
+            else
+            {
+                DeclarePush();
+            }
+
+            return;
+        }
+
+        if (score > player.score)
+        {
+            DeclareVictory();
+        }
+        else if (score < player.score)
+        {
+            DeclareLoss();
+        }
+        else
+        {
+            DeclarePush();
+        }
+    }
+
     public void DeclareVictory()
     {
-        StopAllCoroutines();
         GameManager.Instance.victor = "Dealer";
         GameManager.Instance.gameState = GameState.RoundOver;
+        //StopAllCoroutines();
     }
 
     public void DeclareLoss()
     {
-        StopAllCoroutines();
         GameManager.Instance.victor = "Player";
         GameManager.Instance.gameState = GameState.RoundOver;
+        //StopAllCoroutines();
+    }
+
+    public void DeclarePush()
+    {
+        GameManager.Instance.victor = "Push";
+        GameManager.Instance.gameState = GameState.RoundOver;
+        //StopAllCoroutines();
     }
 
     public void EndRound()
     {
+        StopCoroutine(drawCardsCoroutine);
         attackPhase = false;
     }
 

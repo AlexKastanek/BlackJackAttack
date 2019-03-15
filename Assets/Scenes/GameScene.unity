@@ -1893,6 +1893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 838930588}
+  player: {fileID: 1686285886}
   score: 0
   scoreText: {fileID: 1099626375}
 --- !u!1 &1096063986
@@ -3134,6 +3135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 1397996689}
+  dealer: {fileID: 1028296581}
   balance: 20
   wager: 0
   score: 0
@@ -3151,6 +3153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 590918fb33eff71499d1cf07724f1344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 804210731}
   standButton: {fileID: 1521822588}
   hitButton: {fileID: 891413994}
   doubleButton: {fileID: 1889855833}

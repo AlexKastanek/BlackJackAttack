@@ -8,6 +8,10 @@ public class Hand : MonoBehaviour {
 
     public DrawPile drawPile;
 
+    public float score = 0f;
+
+    public bool blackjack = false;
+    public bool bust = false;
     public bool isDrawing = false;
 
     public virtual void DrawCard()
@@ -51,6 +55,58 @@ public class Hand : MonoBehaviour {
                 targetCardTransform.position, 
                 targetCardTransform.rotation, 
                 0.5f));
+    }
+
+    public virtual void CalculateHandScore()
+    {
+        bool tenCard = false;
+        int aceCount = 0;
+        score = 0f;
+
+        foreach (GameObject cardObject in contents)
+        {
+            Card card = cardObject.GetComponent<Card>();
+
+            if (card.rank == 1)
+            {
+                aceCount++;
+                
+            }
+            else if (card.rank >= 10)
+            {
+                tenCard = true;
+                score += 10;
+            }
+            else
+            {
+                score += card.rank;
+            }
+        }
+
+        if (contents.Count == 2 && aceCount > 0 && tenCard)
+        {
+            blackjack = true;
+            score = 21;
+        }
+        else
+        {
+            for (int i = 0; i < aceCount; i++)
+            {
+                if (score + 11 > 21)
+                {
+                    score += 1;
+                }
+                else
+                {
+                    score += 11;
+                }
+            }
+
+            if (score > 21)
+            {
+                bust = true;
+            }
+        }
     }
 
     protected virtual void DetermineFinalTransform(ref Transform finalTransform)

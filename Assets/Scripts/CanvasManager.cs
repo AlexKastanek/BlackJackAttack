@@ -6,6 +6,7 @@ public class CanvasManager : MonoBehaviour {
 
     public Canvas defaultCanvas;
     public Canvas betCanvas;
+    public Canvas scoreCanvas;
 
     private void Start()
     {
@@ -32,6 +33,7 @@ public class CanvasManager : MonoBehaviour {
                 break;
             case GameState.DealingPhase:
                 defaultCanvas.enabled = true;
+                scoreCanvas.enabled = true;
                 break;
             default:
                 defaultCanvas.enabled = true;

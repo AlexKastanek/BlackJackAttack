@@ -9,12 +9,15 @@ public class Player : MonoBehaviour {
 
     public float balance = 20f;
     public float wager = 0f;
+    public float score = 0f;
 
     public Text balanceText;
     public Text wagerText;
+    public Text scoreText;
 
     private float lastBalance;
     private float lastWager;
+    private float lastScore;
 
     private void Start()
     {
@@ -22,22 +25,30 @@ public class Player : MonoBehaviour {
 
         lastBalance = balance;
         lastWager = wager;
+        lastScore = score;
 
         UpdateDisplay();
     }
 
     private void Update()
     {
-        if (lastBalance != balance || lastWager != wager)
+        score = hand.score;
+
+        if (lastBalance != balance || lastWager != wager || lastScore != score)
         {
             UpdateDisplay();
         }
+
+        lastBalance = balance;
+        lastWager = wager;
+        lastScore = score;
     }
 
     public void UpdateDisplay()
     {
         balanceText.text = "Balance: " + balance.ToString("c2");
         wagerText.text = "Wager: " + wager.ToString("c2");
+        scoreText.text = "Hand: " + score;
     }
 
     public IEnumerator DrawCards(int numCards)
@@ -52,6 +63,8 @@ public class Player : MonoBehaviour {
             Debug.Log("incrementing drawn cards");
             drawnCards++;
         }
+
+        hand.CalculateHandScore();
     }
 
     public void OnStateChanged(GameState gameState)

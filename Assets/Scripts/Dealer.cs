@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/**
+ * The Dealer class. Much of it is the same
+ * as the Player class except for in this
+ * class, there is no need to keep track of
+ * balance or wages, only score and victory
+ * conditions
+ */
 public class Dealer : MonoBehaviour {
 
     public DealerHand hand;

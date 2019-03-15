@@ -2,11 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * PlayerHand class is inherited from the Hand
+ * class. The only difference between this and 
+ * the base class is the DetermineFinalTransform,
+ * which is a bit more complex than on the dealer's
+ * hand due to how it must adjust according to
+ * each additional card.
+ */
 public class PlayerHand : Hand {
 
     public float cardSeparationAmt;
     public float pivotOffset;
 
+    /**
+     * Overridden function for DetermineFinalTransform().
+     * The final transform for the card is calculated
+     * by setting a low bound and high bound angle for the
+     * set of cards. A step is linearly interpolated 
+     * between these two angles, depending on the size of
+     * the hand. The function then adjust all cards in the
+     * hand every time a new card is added.
+     */
 	protected override void DetermineFinalTransform(ref Transform finalTransform)
     {
         Transform card = finalTransform;

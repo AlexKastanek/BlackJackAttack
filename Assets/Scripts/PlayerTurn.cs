@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/**
+ * Class to handle all user input and
+ * operations done during the course of
+ * the player's turn state
+ */
 public class PlayerTurn : MonoBehaviour {
 
     public Canvas canvas;
@@ -65,7 +70,7 @@ public class PlayerTurn : MonoBehaviour {
     private IEnumerator HitHelper()
     {
         canvas.enabled = false;
-        StartCoroutine(DoubleHelper());
+        StartCoroutine(player.DrawCards(1));
         yield return new WaitUntil(() => !player.hand.isDrawing);
         canvas.enabled = true;
 

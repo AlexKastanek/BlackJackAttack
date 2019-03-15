@@ -2,11 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Object that holds information about
+ * the dealer's hand. Inherits from Hand.
+ */
 public class DealerHand : Hand {
 
     public bool holeCardRevealed = false;
     public bool firstDraw = true;
 
+    /**
+     * Overridden CalculateHandScore() function.
+     * The reason this needed to be overridden is
+     * because of the hole card, and how it is not
+     * supposed to be considered until it is revealed.
+     * Once it is revealed, this just calls the
+     * base class function.
+     */
     public override void CalculateHandScore()
     {
         if (holeCardRevealed)
@@ -98,6 +110,16 @@ public class DealerHand : Hand {
         holeCardRevealed = false;
     }
 
+    /**
+     * Overridden DetermineFinalTransform() function.
+     * This will essentially calculate the final
+     * position and rotation for when a card is drawn
+     * and iterpolated from the draw pile to the hand.
+     * For the dealer hand, this is simply a matter of
+     * if it is the hole card, put it on the left, and
+     * if it's not, put it on the right, flip it over,
+     * and stack it
+     */
     protected override void DetermineFinalTransform(ref Transform finalTransform)
     {
         Vector3 finalPosition;

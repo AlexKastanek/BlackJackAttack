@@ -2,6 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * The hand object. Contains a list of
+ * card objects that make up the contents
+ * of the "hand." Also contains info about
+ * the hand such as if it's a blackjack or
+ * a bust. It also handles setting the 
+ * transform the hand and in its contents
+ * in complex transitions such as drawing
+ * a card from the drawpile. The player and
+ * dealer handle this in different ways,
+ * so PlayerHand and DealerHand inherit from
+ * this object
+ */
 public class Hand : MonoBehaviour {
 
     public List<GameObject> contents;
@@ -57,6 +70,14 @@ public class Hand : MonoBehaviour {
                 0.5f));
     }
 
+    /**
+     * A function that carefully calculates
+     * the score of the hand. It considers
+     * the best options for if an ace should
+     * be a 1 or 11, and it also determines
+     * if this hand is a blackjack, a bust,
+     * or neither
+     */
     public virtual void CalculateHandScore()
     {
         bool tenCard = false;
@@ -132,6 +153,11 @@ public class Hand : MonoBehaviour {
         drawPile.Reset();
     }
 
+    /**
+     * A base function that calculates the final transform
+     * of the card. This transform will be different
+     * for the player and dealer
+     */
     protected virtual void DetermineFinalTransform(ref Transform finalTransform)
     {
         Debug.Log("base class call (hand)");

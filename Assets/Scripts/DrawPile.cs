@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * A data structure to hold all of the cards
+ * in structures of decks. There can be an
+ * arbitrary amount of decks, and it is
+ * inherently shuffled since every time
+ * a card is drawn from the pile, the card
+ * index is randomly chosen
+ */
 public class DrawPile : MonoBehaviour {
 
     public Deck deck;

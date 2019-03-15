@@ -7,20 +7,18 @@ public class DrawPile : MonoBehaviour {
     public Deck deck;
     public int deckCount = 2;
 
-    public Dictionary<int, GameObject> drawPile;
+    public List<GameObject> drawPile;
 
     private void Awake()
     {
-        drawPile = new Dictionary<int, GameObject>();
+        drawPile = new List<GameObject>();
 
         // create the drawPile from the decks of cards
         for (int i = 0; i < deckCount; i++)
         {
             for (int j = 0; j < deck.contents.Count; j++)
             {
-                drawPile.Add(
-                    i * deck.contents.Count + j,
-                    deck.contents[j]);
+                drawPile.Add(deck.contents[j]);
             }
         }
     }
@@ -29,20 +27,22 @@ public class DrawPile : MonoBehaviour {
     {
         // debug output all of the cards in the pile
         Debug.Log("Draw pile contains " + drawPile.Count + " cards :");
-        foreach (KeyValuePair<int, GameObject> card in drawPile)
+        int cardIndex = 0;
+        foreach (GameObject card in drawPile)
         {
-            Debug.Log(card.Key + " - " + card.Value.name);
+            Debug.Log(cardIndex + " - " + card.name);
+            cardIndex++;
         }
     }
 
     public GameObject DrawCard()
     {
         // draw pile is shuffled, so drawn card is random
-        int cardIndex = Random.Range(0, drawPile.Count + 1);
+        int cardIndex = Random.Range(0, drawPile.Count);
 
         // get the card and remove it from the pile
         GameObject card = drawPile[cardIndex];
-        drawPile.Remove(cardIndex);
+        drawPile.RemoveAt(cardIndex);
 
         // return the card
         return card;

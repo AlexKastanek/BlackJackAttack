@@ -8,50 +8,62 @@ public class Hand : MonoBehaviour {
 
     public DrawPile drawPile;
 
+    public bool isDrawing = false;
+
     public virtual void DrawCard()
     {
-        // initialize the card positios and rotation
-        Vector3 cardPos = drawPile.transform.position;
-        Quaternion cardRot = Quaternion.identity;
+        isDrawing = true;
+
+        // initialize the card position and rotation
+        Vector3 cardStartPos = drawPile.transform.position;
+        Quaternion cardStartRot = Quaternion.identity;
+
+        // create a card
+        GameObject card = Instantiate(
+            drawPile.DrawCard(),
+            cardStartPos,
+            cardStartRot);
+        contents.Add(card);
 
         // create the card holder (used as a pivot for each card)
-        /*
-        GameObject empty = new GameObject();
-        GameObject cardHolder = Instantiate(
-            empty, 
-            transform.position, 
-            transform.rotation, 
-            transform);
-        */
         GameObject cardHolder = new GameObject();
         cardHolder.transform.SetParent(transform);
         cardHolder.transform.SetPositionAndRotation(
             transform.position, 
             transform.rotation);
+        cardHolder.name = card.name + "_Holder";
 
-        // create a card
-        GameObject card = Instantiate(
-            drawPile.DrawCard(),
-            cardPos,
-            cardRot,
-            cardHolder.transform);
-        contents.Add(card);
+        
+        //Vector3 localPosition = cardHolder.transform.parent.position;
+        //localPosition += cardHolder.transform.forward * 1;
+        //cardHolder.transform.position = localPosition;
+        
+        
 
-        cardHolder.name = contents[contents.Count - 1].name + "_Holder";
+        
+        // initialize target transform with current transform
+        Transform targetCardTransform = card.transform;
+        targetCardTransform.SetParent(cardHolder.transform);
 
         // calculate the final position and rotation of the card
-        DetermineFinalTransform(cardHolder.transform, out cardPos, out cardRot);
+        DetermineFinalTransform(ref targetCardTransform);
 
-        contents[contents.Count - 1].transform.SetPositionAndRotation(
-            cardPos,
-            cardRot);
+        card.transform.SetParent(cardHolder.transform);
+        //card.transform.position = targetCardTransform.position;
+        //card.transform.rotation = targetCardTransform.rotation;
+        StartCoroutine(
+            card.GetComponent<Card>().InterpolateTransform(
+                cardStartPos,
+                cardStartRot,
+                targetCardTransform.position, 
+                targetCardTransform.rotation, 
+                0.5f));
+        
+
     }
 
-    protected virtual void DetermineFinalTransform(Transform cardHolder, out Vector3 finalPos, out Quaternion finalRot)
+    protected virtual void DetermineFinalTransform(ref Transform finalTransform)
     {
         Debug.Log("base class call");
-
-        finalPos = Vector3.zero;
-        finalRot = Quaternion.identity;
     }
 }

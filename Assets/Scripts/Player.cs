@@ -40,11 +40,28 @@ public class Player : MonoBehaviour {
         wagerText.text = "Wager: " + wager.ToString("c2");
     }
 
+    public IEnumerator DrawCards(int numCards)
+    {
+        int drawnCards = 0;
+
+        while (drawnCards < numCards)
+        {
+            hand.DrawCard();
+            yield return new WaitUntil(() => !hand.isDrawing);
+
+            Debug.Log("incrementing drawn cards");
+            drawnCards++;
+        }
+
+        //hand.AdjustTransforms();
+        
+    }
+
     public void OnStateChanged(GameState gameState)
     {
         if (gameState == GameState.DealingPhase)
         {
-            hand.DrawCard();
+            StartCoroutine(DrawCards(2));
         }
     }
 

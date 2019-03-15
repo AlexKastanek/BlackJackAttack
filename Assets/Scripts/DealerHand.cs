@@ -75,14 +75,19 @@ public class DealerHand : Hand {
 
                 GameManager.Instance.gameState = GameState.AttackPhase;
             }
+            else if (firstDraw && score < 10)
+            {
+                firstDraw = false;
+                GameManager.Instance.gameState = GameState.PlayerTurn;
+            }
         }
 
         firstDraw = false;
     }
 
-    public override void Reset()
+    public override void ResetStats()
     {
-        base.Reset();
+        base.ResetStats();
 
         firstDraw = true;
         holeCardRevealed = false;

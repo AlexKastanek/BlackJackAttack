@@ -32,14 +32,20 @@ public class Player : MonoBehaviour {
         UpdateDisplay();
     }
 
+    /**
+     * Most of this function should be moved to Hand.Update
+     */
     private void Update()
     {
         score = hand.score;
 
         if (lastBalance != balance || lastWager != wager || lastScore != score)
         {
-            UpdateDisplay();
+            if (GameManager.Instance.gameState != GameState.RoundOver)
+                UpdateDisplay();
         }
+
+        //TODO Move below to Hand.Update
 
         lastBalance = balance;
         lastWager = wager;
@@ -55,10 +61,14 @@ public class Player : MonoBehaviour {
 
             if (score >= 50)
             {
-                // declare victory
-                GameManager.Instance.StopAllCoroutines();
-                GameManager.Instance.victor = "Player";
-                GameManager.Instance.gameState = GameState.RoundOver;
+                DeclareVictory();
+            }
+        }
+        else if (GameManager.Instance.gameState == GameState.PlayerTurn)
+        {
+            if (hand.bust)
+            {
+                DeclareLoss();
             }
         }
     }
@@ -96,11 +106,30 @@ public class Player : MonoBehaviour {
         scoreText.text = "Hand: " + score;
     }
 
+    public void DeclareVictory()
+    { 
+        StopAllCoroutines();
+        GameManager.Instance.victor = "Player";
+        GameManager.Instance.gameState = GameState.RoundOver;
+    }
+
+    public void DeclareLoss()
+    {
+        StopAllCoroutines();
+        GameManager.Instance.victor = "Dealer";
+        GameManager.Instance.gameState = GameState.RoundOver;
+    }
+
+    public void EndRound()
+    {
+        attackPhase = false; 
+    }
+
     public void RoundReset()
     {
-        attackPhase = false;
         score = 0f;
         hand.Reset();
+        hand.ResetStats();
     }
 
     public IEnumerator DrawCards(int numCards)
@@ -121,7 +150,11 @@ public class Player : MonoBehaviour {
 
     public void OnStateChanged(GameState gameState)
     {
-        if (gameState == GameState.DealingPhase)
+        if (gameState == GameState.GameStart)
+        {
+            RoundReset();
+        }
+        else if (gameState == GameState.DealingPhase)
         {
             StartCoroutine(DrawCards(2));
         }
@@ -132,7 +165,7 @@ public class Player : MonoBehaviour {
         else if (gameState == GameState.RoundOver)
         {
             CalculateWinnings();
-            RoundReset();
+            EndRound();
         }
     }
 

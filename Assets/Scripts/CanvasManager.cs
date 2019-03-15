@@ -7,6 +7,7 @@ public class CanvasManager : MonoBehaviour {
     public Canvas defaultCanvas;
     public Canvas betCanvas;
     public Canvas scoreCanvas;
+    public Canvas playerTurnCanvas;
     public Canvas attackCanvas;
     public Canvas roundOverCanvas;
 
@@ -37,6 +38,11 @@ public class CanvasManager : MonoBehaviour {
                 defaultCanvas.enabled = true;
                 scoreCanvas.enabled = true;
                 break;
+            case GameState.PlayerTurn:
+                defaultCanvas.enabled = true;
+                scoreCanvas.enabled = true;
+                playerTurnCanvas.enabled = true;
+                break;
             case GameState.AttackPhase:
                 defaultCanvas.enabled = true;
                 scoreCanvas.enabled = true;
@@ -58,6 +64,7 @@ public class CanvasManager : MonoBehaviour {
         defaultCanvas.enabled = false;
         betCanvas.enabled = false;
         scoreCanvas.enabled = false;
+        playerTurnCanvas.enabled = false;
         attackCanvas.enabled = false;
         roundOverCanvas.enabled = false;
     }

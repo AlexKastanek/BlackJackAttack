@@ -47,6 +47,26 @@ public class PlayerBet : MonoBehaviour {
         GameManager.Instance.gameState = GameState.DealingPhase;
     }
 
+    public bool DoubleWager()
+    {
+        if (player.wager > player.balance)
+        {
+            return false;
+        }
+        else
+        {
+            player.balance -= player.wager;
+            player.wager *= 2;
+            return true;
+        }
+    }
+
+    public void ForfeitHalfOfWager()
+    {
+        player.wager /= 2;
+        player.balance += player.wager;
+    }
+
     private void DisplayInvalidWager()
     {
         message.color = Color.red;

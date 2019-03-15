@@ -45,10 +45,14 @@ public class Dealer : MonoBehaviour {
 
             if (score >= 50)
             {
-                // declare victory
-                GameManager.Instance.StopAllCoroutines();
-                GameManager.Instance.victor = "Dealer";
-                GameManager.Instance.gameState = GameState.RoundOver;
+                DeclareVictory();
+            }
+        }
+        else if (GameManager.Instance.gameState == GameState.DealerCardReveal)
+        {
+            if (hand.bust)
+            {
+                DeclareLoss();
             }
         }
     }
@@ -58,11 +62,30 @@ public class Dealer : MonoBehaviour {
         scoreText.text = "Dealer's hand: " + score;
     }
 
-    public void RoundReset()
+    public void DeclareVictory()
+    {
+        StopAllCoroutines();
+        GameManager.Instance.victor = "Dealer";
+        GameManager.Instance.gameState = GameState.RoundOver;
+    }
+
+    public void DeclareLoss()
+    {
+        StopAllCoroutines();
+        GameManager.Instance.victor = "Player";
+        GameManager.Instance.gameState = GameState.RoundOver;
+    }
+
+    public void EndRound()
     {
         attackPhase = false;
+    }
+
+    public void RoundReset()
+    {
         score = 0f;
         hand.Reset();
+        hand.ResetStats();
     }
 
     public IEnumerator DrawCards(int numCards)
@@ -83,7 +106,11 @@ public class Dealer : MonoBehaviour {
 
     public void OnStateChanged(GameState gameState)
     {
-        if (gameState == GameState.DealingPhase)
+        if (gameState == GameState.GameStart)
+        {
+            RoundReset();
+        }
+        else if (gameState == GameState.DealingPhase)
         {
             StartCoroutine(DrawCards(2));
         }
@@ -93,7 +120,7 @@ public class Dealer : MonoBehaviour {
         }
         else if (gameState == GameState.RoundOver)
         {
-            RoundReset();
+            EndRound();
         }
     }
 }

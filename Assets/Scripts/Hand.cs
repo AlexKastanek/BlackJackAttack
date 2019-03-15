@@ -109,12 +109,17 @@ public class Hand : MonoBehaviour {
         }
     }
 
-    public virtual void Reset()
+    public virtual void ResetStats()
     {
         blackjack = false;
         bust = false;
         score = 0;
-        
+    }
+
+    public virtual void Reset()
+    {
+        Debug.Log("Resetting...");
+
         foreach (GameObject cardObject in contents)
         {
             Destroy(cardObject);

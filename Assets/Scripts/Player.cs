@@ -52,9 +52,6 @@ public class Player : MonoBehaviour {
             Debug.Log("incrementing drawn cards");
             drawnCards++;
         }
-
-        //hand.AdjustTransforms();
-        
     }
 
     public void OnStateChanged(GameState gameState)

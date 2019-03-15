@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CanvasManager.cs" />
     <Compile Include="Assets\Scripts\Card.cs" />
+    <Compile Include="Assets\Scripts\Dealer.cs" />
+    <Compile Include="Assets\Scripts\DealerHand.cs" />
     <Compile Include="Assets\Scripts\Deck.cs" />
     <Compile Include="Assets\Scripts\DrawPile.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />

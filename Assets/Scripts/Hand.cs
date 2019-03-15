@@ -16,13 +16,13 @@ public class Hand : MonoBehaviour {
 
         // initialize the card position and rotation
         Vector3 cardStartPos = drawPile.transform.position;
-        Quaternion cardStartRot = Quaternion.identity;
+        Quaternion cardStartRot = Quaternion.Euler(90f, 0f, 0f);
 
         // create a card
         GameObject card = Instantiate(
             drawPile.DrawCard(),
             cardStartPos,
-            cardStartRot);
+            Quaternion.identity);
         contents.Add(card);
 
         // create the card holder (used as a pivot for each card)
@@ -32,14 +32,6 @@ public class Hand : MonoBehaviour {
             transform.position, 
             transform.rotation);
         cardHolder.name = card.name + "_Holder";
-
-        
-        //Vector3 localPosition = cardHolder.transform.parent.position;
-        //localPosition += cardHolder.transform.forward * 1;
-        //cardHolder.transform.position = localPosition;
-        
-        
-
         
         // initialize target transform with current transform
         Transform targetCardTransform = card.transform;
@@ -48,9 +40,10 @@ public class Hand : MonoBehaviour {
         // calculate the final position and rotation of the card
         DetermineFinalTransform(ref targetCardTransform);
 
+        // set the card holder as a parent of the card
         card.transform.SetParent(cardHolder.transform);
-        //card.transform.position = targetCardTransform.position;
-        //card.transform.rotation = targetCardTransform.rotation;
+ 
+        // start a coroutine to interpolate the card transform
         StartCoroutine(
             card.GetComponent<Card>().InterpolateTransform(
                 cardStartPos,
@@ -58,12 +51,10 @@ public class Hand : MonoBehaviour {
                 targetCardTransform.position, 
                 targetCardTransform.rotation, 
                 0.5f));
-        
-
     }
 
     protected virtual void DetermineFinalTransform(ref Transform finalTransform)
     {
-        Debug.Log("base class call");
+        Debug.Log("base class call (hand)");
     }
 }

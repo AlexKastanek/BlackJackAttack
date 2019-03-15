@@ -60,6 +60,8 @@ public class Dealer : MonoBehaviour {
 
     public void RoundReset()
     {
+        attackPhase = false;
+        score = 0f;
         hand.Reset();
     }
 

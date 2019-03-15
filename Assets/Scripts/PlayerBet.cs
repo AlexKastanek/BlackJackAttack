@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/**
+ * Handles all operations on the player's
+ * balance and wagers. Handles all input 
+ * from the bet canvas
+ */
 public class PlayerBet : MonoBehaviour {
 
     public Text message;
@@ -19,6 +24,10 @@ public class PlayerBet : MonoBehaviour {
         submitButton.onClick.AddListener(CheckWagerEntry);
     }
 
+    /**
+     * Checks to make sure the value inserted into the
+     * input field is a valid entry
+     */
     public void CheckWagerEntry()
     {
         float wager;
@@ -47,6 +56,10 @@ public class PlayerBet : MonoBehaviour {
         GameManager.Instance.gameState = GameState.DealingPhase;
     }
 
+    /**
+     * Doubles the wager. Returns true if possible
+     * and false if not.
+     */
     public bool DoubleWager()
     {
         if (player.wager > player.balance)
@@ -61,6 +74,10 @@ public class PlayerBet : MonoBehaviour {
         }
     }
 
+    /**
+     * Splits wager in half and adds to balance.
+     * Used with Surrender().
+     */
     public void ForfeitHalfOfWager()
     {
         player.wager /= 2;

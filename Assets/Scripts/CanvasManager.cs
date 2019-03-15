@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * The canvas manager simply enables the correct
+ * canvases depending on which state the game is in
+ */
 public class CanvasManager : MonoBehaviour {
 
     public Canvas defaultCanvas;

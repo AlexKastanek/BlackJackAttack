@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/**
+ * Contains all player data and functionality.
+ * This mostly includes victory conditions
+ * for the player and the player's balance
+ * information.
+ * 
+ * Note that some of this functionality
+ * would be much better suited in either
+ * a base class that both a player object
+ * and dealer object inherit from or in the
+ * hand object since lots of this code is
+ * duplicated in the dealer object.
+ */
 public class Player : MonoBehaviour {
 
     public PlayerHand hand;
@@ -38,25 +51,23 @@ public class Player : MonoBehaviour {
         UpdateDisplay();
     }
 
-    /**
-     * Most of this function should be moved to Hand.Update
-     */
     private void Update()
     {
+        // get the score from the current hand
         score = hand.score;
 
+        // if info has changed update the display
         if (lastBalance != balance || lastWager != wager || lastScore != score)
         {
-            if (GameManager.Instance.gameState != GameState.RoundOver)
-                UpdateDisplay();
+            UpdateDisplay();
         }
-
-        //TODO Move below to Hand.Update
 
         lastBalance = balance;
         lastWager = wager;
         lastScore = score;
 
+        // if in the attack state, keep drawing cards
+        // until 50 is reached. Then determine the victor
         if (attackPhase)
         {
             if (!hand.isDrawing)
@@ -70,6 +81,7 @@ public class Player : MonoBehaviour {
                 DetermineVictorByScore();
             }
         }
+        // else check if hand has busted
         else if (GameManager.Instance.gameState == GameState.PlayerTurn)
         {
             if (hand.bust)
@@ -79,6 +91,10 @@ public class Player : MonoBehaviour {
         }
     }
 
+    /**
+     * Function to determine how much to add
+     * to the player balance
+     */
     private void CalculateWinnings()
     {
         if (GameManager.Instance.victor == "Player")
@@ -107,6 +123,7 @@ public class Player : MonoBehaviour {
         if (balance == 0f)
         {
             Debug.Log("Game Over");
+            GameManager.Instance.gameState = GameState.GameOver;
         }
     }
 
@@ -117,6 +134,11 @@ public class Player : MonoBehaviour {
         scoreText.text = "Hand: " + score;
     }
 
+    /**
+     * This function prioritizes blackjacks
+     * but if no one has a blackjack then
+     * it determines the victor by score
+     */
     public void DetermineVictorByScore()
     {
         if (score == 21 && dealer.score == 21)
@@ -185,6 +207,10 @@ public class Player : MonoBehaviour {
         hand.ResetStats();
     }
 
+    /**
+     * A coroutine that will continuously draw
+     * cards for numCards amount of times
+     */
     public IEnumerator DrawCards(int numCards)
     {
         int drawnCards = 0;

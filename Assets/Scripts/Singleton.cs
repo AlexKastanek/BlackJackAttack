@@ -1,58 +1,26 @@
 ﻿using UnityEngine;
 
-// Inherit from this base class to create a singleton.
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+/**
+ * A singleton class in which the singleton
+ * only exists for the specific scene it has
+ * an instance in. This singleton is able to
+ * destroyed and recreated on scene load
+ */
+public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 {
-    private static bool m_ShuttingDown = false;
-    private static object m_Lock = new object();
-    private static T m_Instance;
-
-    // Access singleton instance through this propriety.
+    private static T m_Instance = null;
     public static T Instance
     {
         get
         {
-            if (m_ShuttingDown)
+            if (m_Instance == null)
             {
-                Debug.LogWarning("[Singleton] Instance '" + typeof(T) +
-                    "' already destroyed. Returning null.");
-                return null;
-            }
-
-            lock (m_Lock)
-            {
+                m_Instance = FindObjectOfType<T>();
+                // fallback, might not be necessary.
                 if (m_Instance == null)
-                {
-                    // Search for existing instance.
-                    m_Instance = (T)FindObjectOfType(typeof(T));
-
-                    // Create new instance if one doesn't already exist.
-                    if (m_Instance == null)
-                    {
-                        // Need to create a new GameObject to attach the singleton to.
-                        var singletonObject = new GameObject();
-                        m_Instance = singletonObject.AddComponent<T>();
-                        singletonObject.name = typeof(T).ToString() + " (Singleton)";
-
-                        // Make instance persistent.
-                        DontDestroyOnLoad(singletonObject);
-                    }
-                }
-
-                return m_Instance;
+                    m_Instance = new GameObject(typeof(T).Name).AddComponent<T>();
             }
+            return m_Instance;
         }
-    }
-
-
-    private void OnApplicationQuit()
-    {
-        m_ShuttingDown = true;
-    }
-
-
-    private void OnDestroy()
-    {
-        m_ShuttingDown = true;
     }
 }

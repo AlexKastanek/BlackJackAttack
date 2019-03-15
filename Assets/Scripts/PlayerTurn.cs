@@ -50,7 +50,7 @@ public class PlayerTurn : MonoBehaviour {
         if (player.hand.contents.Count <= 2)
         {
             playerBet.ForfeitHalfOfWager();
-            GameManager.Instance.gameState = GameState.RoundOver;
+            player.DeclareLoss();
         }
         else
         {

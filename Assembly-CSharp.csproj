@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\PlayerHand.cs" />
     <Compile Include="Assets\Scripts\PlayerTurn.cs" />
     <Compile Include="Assets\Scripts\RoundOver.cs" />
+    <Compile Include="Assets\Scripts\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Singleton.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/akast/Documents/UnityProjects/BlackJackAttack/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
